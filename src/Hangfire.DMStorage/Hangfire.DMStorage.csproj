@@ -5,7 +5,7 @@
     <Copyright>Copyright 2025</Copyright>
     <PackageProjectUrl>https://github.com/findersky/Hangfire.DMStorage</PackageProjectUrl>
     <PackageTags>Hangfire DM（dameng） Hangfire.DM Hangfire.DMStorage</PackageTags>
-    <Title>Hangfire.DM</Title>
+    <Title>Hangfire.DMStorage</Title>
     <Description>Hangfire DM(DaMeng) Storage。
 Hangfire 达梦数据库存储。</Description>
     <Authors>findersky</Authors>
@@ -13,6 +13,12 @@ Hangfire 达梦数据库存储。</Description>
     <RepositoryType>git</RepositoryType>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <SignAssembly>False</SignAssembly>
+    <PackageId>DMStorage.Hangfire</PackageId>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <AssemblyVersion>1.0.0.1</AssemblyVersion>
+    <FileVersion>1.0.0.1</FileVersion>
+    <Version>1.0.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -28,9 +34,20 @@ Hangfire 达梦数据库存储。</Description>
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Dapper" Version="2.1.66" />
-    <PackageReference Include="DM.DmProvider" Version="8.3.1.33449" />
-    <PackageReference Include="Hangfire.Core" Version="1.8.12" />
+    <None Include="..\..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dapper" Version="1.50.5" />
+    <PackageReference Include="DM.DmProvider" Version="8.3.1.28188" />
+    <PackageReference Include="Hangfire.Core" Version="1.7.25" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
   </ItemGroup>
 

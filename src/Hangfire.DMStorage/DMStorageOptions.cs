@@ -51,6 +51,6 @@ namespace Hangfire.DMStorage
         [Obsolete("Does not make sense anymore. Background jobs re-queued instantly even after ungraceful shutdown now. Will be removed in 2.0.0.")]
         public TimeSpan InvisibilityTimeout { get; set; }
 
-        public string SchemaName { get; set; }
+        public string SchemaName { get; set; } = "";
     }
 }
