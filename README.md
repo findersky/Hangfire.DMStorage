@@ -41,7 +41,7 @@ GlobalConfiguration.Configuration.UseStorage(
         }));
 ```
 ## Use in Hangfire.HttpJob
-```
+```csharp
      context.Services.AddHangfire(x => x.UseStorage(new DMStorage(connectionString, new DMStorageOptions()
             {
                 TransactionIsolationLevel = System.Data.IsolationLevel.ReadCommitted,
