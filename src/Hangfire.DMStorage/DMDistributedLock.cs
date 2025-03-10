@@ -50,7 +50,7 @@ namespace Hangfire.DMStorage
                 _connection
                     .Execute(
                         @" 
-IINSERT INTO ""DistributedLock"" (""Resource"", ""CreatedAt"")
+INSERT INTO ""DistributedLock"" (""Resource"", ""CreatedAt"")
                 (SELECT :RES, :NOW
                 FROM DUAL
                 WHERE NOT EXISTS

@@ -38,7 +38,7 @@ namespace Hangfire.DMStorage
             {
                 tableExistsQuery = $@"SELECT TABLE_NAME
 FROM all_tables
-WHERE OWNER = '{schemaName}' AND TABLE_NAME IN TABLE_NAME IN('AggregatedCounter','Counter','DistributedLock','Hash','Job','JobParameter','JobQueue','JobState','List','Server','Set','State')
+WHERE OWNER = '{schemaName}' AND  TABLE_NAME IN('AggregatedCounter','Counter','DistributedLock','Hash','Job','JobParameter','JobQueue','JobState','List','Server','Set','State')
 ORDER BY TABLE_NAME;";
             }
             else

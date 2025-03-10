@@ -26,11 +26,12 @@ namespace Hangfire.DMStorage
         private readonly Func<IDbConnection> _connectionFactory;
         private readonly DMStorageOptions _options;
 
+/*
         private readonly Dictionary<string, bool> _features =
            new Dictionary<string, bool>(StringComparer.OrdinalIgnoreCase)
            {
                 { JobStorageFeatures.JobQueueProperty, true }
-           };
+           };*/
 
         public virtual PersistentJobQueueProviderCollection QueueProviders { get; private set; }
 
@@ -237,7 +238,7 @@ namespace Hangfire.DMStorage
             connection?.Dispose();
         }
        
-
+        /*
         public override bool HasFeature(string featureId)
         {
             if (featureId == null) throw new ArgumentNullException(nameof(featureId));
@@ -245,6 +246,7 @@ namespace Hangfire.DMStorage
             return _features.TryGetValue(featureId, out var isSupported)
                 ? isSupported
                 : base.HasFeature(featureId);
-        }
+        }*/
+
     }
 }
