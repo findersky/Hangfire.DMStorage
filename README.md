@@ -1,6 +1,6 @@
-# Hangfire.DMStorage
+ï»¿# Hangfire.DMStorage
 
-## <a target="_blank" href="Chinese_README.md">ÖÐÎÄ</a>
+## <a target="_blank" href="Chinese_README.md">ä¸­æ–‡</a>
 
 Hangfire.DMStorage is an extension component that provides support for Hangfire to use the Dameng database.
 
