@@ -7,11 +7,12 @@
     <PackageTags>Hangfire DM（dameng） Hangfire.DM Hangfire.DMStorage</PackageTags>
     <Title>Hangfire.DM</Title>
     <Description>Hangfire DM(DaMeng) Storage。
-Hangfire 达梦数据存储。</Description>
+Hangfire 达梦数据库存储。</Description>
     <Authors>findersky</Authors>
     <RepositoryUrl>https://github.com/findersky/Hangfire.DMStorage</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <SignAssembly>False</SignAssembly>
   </PropertyGroup>
 
   <ItemGroup>
