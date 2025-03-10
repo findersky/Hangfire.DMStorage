@@ -268,9 +268,9 @@ WHEN NOT MATCHED THEN
       USING (SELECT 1 FROM DUAL) SRC
          ON (S.""Id"" = :ID)
  WHEN MATCHED THEN
-      UPDATE SET ""LastHeartbeat"" =:LAST_HEART_BEAT
+      UPDATE SET ""LastHeartBeat"" =:LAST_HEART_BEAT
  WHEN NOT MATCHED THEN
-      INSERT (""Id"" , ""Data"", ""LastHeartbeat"")
+      INSERT (""Id"" , ""Data"", ""LastHeartBeat"")
       VALUES (:ID, :DATA, :LAST_HEART_BEAT)
 ",
                     new
@@ -312,7 +312,7 @@ WHEN NOT MATCHED THEN
             _storage.UseConnection(connection =>
             {
                 connection.Execute(
-                    @" UPDATE ""Server"" SET ""LastHeartbeat"" = :NOW WHERE ""Id"" = :ID",
+                    @" UPDATE ""Server"" SET ""LastHeartBeat"" = :NOW WHERE ""Id"" = :ID",
                     new { NOW = DateTime.UtcNow, ID = serverId });
             });
         }
@@ -327,7 +327,7 @@ WHEN NOT MATCHED THEN
             return
                 _storage.UseConnection(connection =>
                     connection.Execute(
-                        @" DELETE FROM ""Server"" WHERE ""LastHeartbeat"" < :TIME_OUT_AT",
+                        @" DELETE FROM ""Server"" WHERE ""LastHeartBeat"" < :TIME_OUT_AT",
                         new { TIME_OUT_AT = DateTime.UtcNow.Add(timeOut.Negate()) }));
         }
 

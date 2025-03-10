@@ -94,9 +94,9 @@ ADD CONSTRAINT FK_JOB_QUEUE_JOB
 FOREIGN KEY ("JobId") REFERENCES "Job" ("Id") ON DELETE CASCADE;
 
 -- ----------------------------
--- Table structure for `JobState`
+-- Table structure for `State`
 -- ----------------------------
-CREATE TABLE [SchemaName]"JobState" (
+CREATE TABLE [SchemaName]"State" (
     "Id"          INT,
     "JobId"      INT,
     "Name"        VARCHAR(20),
@@ -105,9 +105,9 @@ CREATE TABLE [SchemaName]"JobState" (
     "DATA"        CLOB
 );
 
-ALTER TABLE [SchemaName]"JobState" ADD PRIMARY KEY ("Id");
-ALTER TABLE [SchemaName]"JobState" 
-ADD CONSTRAINT FK_JOB_STATE_JOB 
+ALTER TABLE [SchemaName]"State" ADD PRIMARY KEY ("Id");
+ALTER TABLE [SchemaName]"State" 
+ADD CONSTRAINT FK_STATE_JOB 
 FOREIGN KEY ("JobId") REFERENCES "Job" ("Id") ON DELETE CASCADE;
 
 -- ----------------------------
@@ -116,7 +116,7 @@ FOREIGN KEY ("JobId") REFERENCES "Job" ("Id") ON DELETE CASCADE;
 CREATE TABLE [SchemaName]"Server" (
     "Id"            VARCHAR(100),
     "Data"          CLOB,
-    "LastHeartbeat" TIMESTAMP
+    "LastHeartBeat" TIMESTAMP
 );
 
 ALTER TABLE [SchemaName]"Server" ADD PRIMARY KEY ("Id");
@@ -135,30 +135,6 @@ CREATE TABLE [SchemaName]"Set" (
 ALTER TABLE [SchemaName]"Set" ADD PRIMARY KEY ("Id");
 ALTER TABLE [SchemaName]"Set" ADD UNIQUE ("Key", "Value");
 
-CREATE TABLE [SchemaName]"State"
-(
-    "Id"         INT          NOT NULL,
-    "JobId"      INT          NOT NULL,
-    "Name"       VARCHAR(20)  NOT NULL,
-    "Reason"     VARCHAR(100),
-    "CreatedAt"  TIMESTAMP(6) NOT NULL,
-    "Data"       CLOB,
-    PRIMARY KEY ("Id")
-);
-
-CREATE TRIGGER TRG_State_Id BEFORE INSERT ON [SchemaName]"State"
-FOR EACH ROW
-BEGIN
-    SELECT SEQ_State_Id.NEXTVAL INTO :NEW.Id FROM DUAL;
-END;
-
-CREATE INDEX IDX_State_JobId ON [SchemaName]"State" ("JobId");
-
-ALTER TABLE [SchemaName]"State"
-    ADD CONSTRAINT FK_State_Job
-        FOREIGN KEY ("JobId")
-            REFERENCES [SchemaName]"Job" ("Id")
-            ON DELETE CASCADE;
 -- ----------------------------
 -- Table structure for `List`
 -- ----------------------------

@@ -6,6 +6,6 @@ namespace Hangfire.DMStorage.Entities
     {
         public string Id { get; set; }
         public string Data { get; set; }
-        public DateTime LastHeartbeat { get; set; }
+        public DateTime LastHeartBeat { get; set; }
     }
 }
