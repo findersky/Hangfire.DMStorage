@@ -16,9 +16,18 @@ Hangfire 达梦数据库存储。</Description>
     <PackageId>DMStorage.Hangfire</PackageId>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <AssemblyVersion>1.0.0.1</AssemblyVersion>
-    <FileVersion>1.0.0.1</FileVersion>
-    <Version>1.0.0.1</Version>
+    <AssemblyVersion>1.0.0.2</AssemblyVersion>
+    <FileVersion>1.0.0.2</FileVersion>
+    <Version>1.0.0.2</Version>
+    <PackageReleaseNotes>1、Update the Dapper library version to 1.50.5. 
+      Update the Hangfire.Core library version to 1.7.25. 
+      Update the DM.DmProvider library version to 8.3.1.28188.
+
+
+2、These updates are to adapt to the current project.
+
+
+</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
