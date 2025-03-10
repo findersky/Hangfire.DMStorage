@@ -3,6 +3,7 @@
 ################################################################################
 
 /.vs
-/Hangfire.DMStorage/bin/Debug
-/Hangfire.DMStorage/.vs
-/Hangfire.DMStorage/obj
+/src/.vs
+/src/Hangfire.DMStorage/bin/Debug
+/src/Hangfire.DMStorage/.vs
+/src/Hangfire.DMStorage/obj
