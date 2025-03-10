@@ -7,3 +7,5 @@
 /src/Hangfire.DMStorage/bin/Debug
 /src/Hangfire.DMStorage/.vs
 /src/Hangfire.DMStorage/obj
+/Hangfire.DMStorage.Tests/obj
+/Hangfire.DMStorage.Tests/bin
