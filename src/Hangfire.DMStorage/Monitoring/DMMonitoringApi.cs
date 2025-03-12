@@ -108,7 +108,7 @@ namespace Hangfire.DMStorage.Monitoring
           ,""Value""
           ,""JobId""
       FROM ""JobParameter""
-     WHERE JobId = :ID
+     WHERE ""JobId"" = :ID
 ";
 
                 var jobParameters = connection.Query<JobParameter>(jobParametersQuery, new { ID = jobId }).ToDictionary(x => x.Name, parameter => parameter.Value);
@@ -431,9 +431,9 @@ SELECT Id
 
         private static Dictionary<DateTime, long> GetTimelineStats(IDbConnection connection, IDictionary<string, DateTime> keyMaps)
         {
-            var valuesMap = connection.Query(@"SELECT ""Key"", ""Value"" AS Count FROM ""AggregatedCounter"" WHERE ""Key"" in :KEYS",
+            var valuesMap = connection.Query(@"SELECT ""Key"", ""Value"" AS ""Count"" FROM ""AggregatedCounter"" WHERE ""Key"" in :KEYS",
                 new { KEYS = keyMaps.Keys })
-                .ToDictionary(x => (string)x.KEY, x => (long)x.COUNT);
+                .ToDictionary(x => (string)x.Key, x => (long)x.Count);
 
             foreach (var key in keyMaps.Keys)
             {
@@ -486,7 +486,6 @@ SELECT J.""Id"" AS Id, J.""StateId"" AS StateId, J.""StateName"" AS StateName, J
         private static JobList<FetchedJobDto> FetchedJobs(IDbConnection connection, IEnumerable<int> jobIds)
         {
             const string fetchedJobsSql = @"
- SELECT J.ID AS Id, J.STATE_ID AS StateId, J.STATE_NAME AS StateName, J.INVOCATION_DATA AS InvocationData, J.ARGUMENTS AS Arguments, J.CREATED_AT AS CreatedAt, J.EXPIRE_AT AS ExpireAt, S.REASON AS StateReason, S.DATA AS StateData 
  SELECT J.""Id"" AS Id, J.""StateId"" AS StateId, J.""StateName"" AS StateName, J.""InvocationData"" AS InvocationData, J.""Arguments"" AS Arguments, J.""CreatedAt"" AS CreatedAt, J.""ExpireAt"" AS ExpireAt, S.""Reason"" AS StateReason, S.""Data"" AS StateData 
    FROM ""Job"" J
  LEFT JOIN ""State"" S ON S.""Id"" = J.""StateId""
