@@ -102,7 +102,7 @@ CREATE TABLE [SchemaName]"State" (
     "Name"        VARCHAR(20),
     "Reason"      VARCHAR(100),
     "CreatedAt"  TIMESTAMP,
-    "DATA"        CLOB
+    "Data"        CLOB
 );
 
 ALTER TABLE [SchemaName]"State" ADD PRIMARY KEY ("Id");
