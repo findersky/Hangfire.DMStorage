@@ -328,12 +328,12 @@ namespace Hangfire.DMStorage.Monitoring
         private long GetNumberOfJobsByStateName(IDbConnection connection, string stateName)
         {
             var sqlQuery = _jobListLimit.HasValue
-                ? @"SELECT COUNT(""Id"") FROM (SELECT ""Id"" FROM ""Job"" WHERE ""StateName"" = :STATE_NAME AND ROWNUM <= :LIMIT)"
+                ? @"SELECT COUNT(""Id"") FROM (SELECT ""Id"" FROM ""Job"" WHERE ""StateName"" = :STATE_NAME AND ROWNUM <= :LISTLIMIT)"
                 : @"SELECT COUNT(""Id"") FROM ""Job"" WHERE ""StateName"" = :STATE_NAME";
 
             var count = connection.QuerySingle<int>(
                  sqlQuery,
-                 new { STATE_NAME = stateName, LIMIT = _jobListLimit });
+                 new { STATE_NAME = stateName, LISTLIMIT = _jobListLimit });
 
             return count;
         }
