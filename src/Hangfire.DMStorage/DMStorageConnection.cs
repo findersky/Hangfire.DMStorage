@@ -69,7 +69,7 @@ namespace Hangfire.DMStorage
 
                 connection.Execute(
                     @" 
- INSERT INTO ""Job"" (""Id"", ""InvocationData"", ""Arguments"", ""CreatedAt"", ExpireAt"") 
+ INSERT INTO ""Job"" (""Id"", ""InvocationData"", ""Arguments"", ""CreatedAt"", ""ExpireAt"") 
      VALUES (:ID, :INVOCATION_DATA, :ARGUMENTS, :CREATED_AT, :EXPIRE_AT)
 ",
                     dmDynamicParameters);
