@@ -16,9 +16,9 @@ Hangfire 达梦数据库存储。</Description>
     <PackageId>DMStorage.Hangfire</PackageId>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <AssemblyVersion>1.0.0.3</AssemblyVersion>
-    <FileVersion>1.0.0.3</FileVersion>
-    <Version>1.0.0.3</Version>
+    <AssemblyVersion>1.0.0.4</AssemblyVersion>
+    <FileVersion>1.0.0.4</FileVersion>
+    <Version>1.0.0.4</Version>
     <PackageReleaseNotes>1、Fix known script errors.
 
 </PackageReleaseNotes>
