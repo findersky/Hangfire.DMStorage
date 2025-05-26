@@ -25,7 +25,12 @@ namespace Hangfire.DMStorage
             var script = GetStringResource("Hangfire.DMStorage.Install.sql");
             script =!string.IsNullOrWhiteSpace(schemaName)?script.Replace("[SchemaNameOnly]", $"{schemaName}").Replace("[SchemaName]",$"{schemaName}."): script.Replace("[SchemaNameOnly]", "").Replace("[SchemaName]","");
             var sqlCommands = script.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
-            sqlCommands.ToList().ForEach(s => connection.Execute(s));
+            sqlCommands.ToList().ForEach(s => {
+                if (!string.IsNullOrWhiteSpace(s.Trim()))
+                {
+                    connection.Execute(s);
+                }
+            });
             Log.Info("Hangfire SQL objects installed.");
         }
 
