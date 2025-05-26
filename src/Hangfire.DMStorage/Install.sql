@@ -58,6 +58,68 @@ CREATE TABLE IF NOT EXISTS [SchemaName]"Job" (
 );
 /
 
+DECLARE
+    index_exists INTEGER;
+    v_owner VARCHAR2(30) := '[SchemaNameOnly]';  -- 指定模式名
+BEGIN
+    -- 检查索引是否存在（跨模式）
+    EXECUTE IMMEDIATE '
+        SELECT COUNT(*) 
+        FROM ALL_INDEXES 
+        WHERE INDEX_NAME = ''IX_HangFire_Job_StateName''
+          AND OWNER = UPPER(:1)'
+    INTO index_exists
+    USING v_owner;
+
+    IF index_exists = 0 THEN
+        EXECUTE IMMEDIATE '
+            CREATE INDEX "' || v_owner || '"."IX_HangFire_Job_StateName" 
+            ON "' || v_owner || '"."Job" ("StateName")';
+    END IF;
+END;
+/
+
+DECLARE
+    v_schema_name   VARCHAR2(30) := '[SchemaNameOnly]';        -- 指定模式名（为空时使用当前模式）
+    v_table_name    VARCHAR2(30) := 'Job';           -- 表名（需与定义时大小写一致）
+    v_index_name    VARCHAR2(30) := 'IX_HangFire_Job_ExpireAt'; -- 索引名（保留大小写）
+    index_exists    INTEGER := 0;
+BEGIN
+    --  检查索引是否存在（精确匹配大小写）
+    IF v_schema_name IS NOT NULL AND v_schema_name != '' THEN
+        -- 跨模式查询（处理双引号定义的对象名）
+        EXECUTE IMMEDIATE '
+            SELECT COUNT(*) 
+            FROM ALL_INDEXES 
+            WHERE OWNER = :1 
+              AND INDEX_NAME = :2 
+              AND TABLE_NAME = :3'
+        INTO index_exists
+        USING UPPER(v_schema_name), v_index_name, v_table_name;
+    ELSE
+        -- 当前模式查询
+        SELECT COUNT(*) INTO index_exists
+        FROM USER_INDEXES
+        WHERE INDEX_NAME = v_index_name 
+          AND TABLE_NAME = v_table_name;
+    END IF;
+
+    --  动态创建索引（保留表名、字段名大小写）
+    IF index_exists = 0 THEN
+        EXECUTE IMMEDIATE '
+            CREATE INDEX "' || v_index_name || '" 
+            ON "' || 
+                CASE WHEN v_schema_name != '' THEN v_schema_name || '"."' ELSE '' END 
+                || v_table_name || '" 
+            ("ExpireAt")';
+        DBMS_OUTPUT.PUT_LINE('索引 "' || v_index_name || '" 创建成功');
+    END IF;
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('错误: ' || SQLERRM);
+END;
+/
+
 -- ----------------------------
 -- Table structure for `Counter`
 -- ----------------------------
