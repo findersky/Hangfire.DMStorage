@@ -126,6 +126,48 @@ CREATE TABLE IF NOT EXISTS [SchemaName]"Counter" (
 );
 /
 
+DECLARE
+    v_schema_name   VARCHAR2(30) := '[SchemaNameOnly]';         -- 目标模式（空字符串表示当前模式）
+    v_table_name    VARCHAR2(30) := 'Counter';        -- 表名（大小写敏感）
+    v_index_name    VARCHAR2(30) := 'IX_HangFire_Counter_Key';  -- 索引名（保留原始大小写）
+    index_exists    INTEGER := 0;
+BEGIN
+    -- [1] 精确检查索引是否存在（兼容双引号定义的对象名）
+    IF v_schema_name IS NOT NULL AND v_schema_name != '' THEN
+        -- 跨模式检查（处理双引号场景）
+        EXECUTE IMMEDIATE '
+            SELECT COUNT(*) 
+            FROM ALL_INDEXES 
+            WHERE OWNER = :1 
+              AND INDEX_NAME = :2 
+              AND TABLE_NAME = :3'
+        INTO index_exists
+        USING UPPER(v_schema_name), v_index_name, v_table_name;
+    ELSE
+        -- 当前模式检查
+        SELECT COUNT(*) INTO index_exists
+        FROM USER_INDEXES 
+        WHERE INDEX_NAME = v_index_name 
+          AND TABLE_NAME = v_table_name;
+    END IF;
+
+    -- [2] 动态创建索引（强制保留大小写）
+    IF index_exists = 0 THEN
+        EXECUTE IMMEDIATE '
+            CREATE INDEX "' || v_index_name || '" 
+            ON "' || 
+                CASE WHEN v_schema_name != '' THEN v_schema_name || '"."' ELSE '' END 
+                || v_table_name || '" 
+            ("Key")';
+        
+        DBMS_OUTPUT.PUT_LINE('索引 "' || v_index_name || '" 创建成功');
+    END IF;
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('执行错误: ' || SQLERRM);
+END;
+/
+
 -- ----------------------------
 -- Table structure for `AggregatedCounter`
 -- ----------------------------
@@ -164,6 +206,88 @@ BEGIN
         ';
         DBMS_OUTPUT.PUT_LINE('唯一约束添加成功');
     END IF;
+END;
+
+/
+DECLARE
+    v_schema_name   VARCHAR2(30) := '[SchemaNameOnly]';         -- 目标模式（空字符串表示当前模式）
+    v_table_name    VARCHAR2(30) := 'AggregatedCounter';        -- 表名（大小写敏感）
+    v_index_name    VARCHAR2(100) := 'IX_HangFire_AggregatedCounter_Key';  -- 索引名（保留原始大小写）
+    index_exists    INTEGER := 0;
+BEGIN
+    -- [1] 精确检查索引是否存在（兼容双引号定义的对象名）
+    IF v_schema_name IS NOT NULL AND v_schema_name != '' THEN
+        -- 跨模式检查（处理双引号场景）
+        EXECUTE IMMEDIATE '
+            SELECT COUNT(*) 
+            FROM ALL_INDEXES 
+            WHERE OWNER = :1 
+              AND INDEX_NAME = :2 
+              AND TABLE_NAME = :3'
+        INTO index_exists
+        USING UPPER(v_schema_name), v_index_name, v_table_name;
+    ELSE
+        -- 当前模式检查
+        SELECT COUNT(*) INTO index_exists
+        FROM USER_INDEXES 
+        WHERE INDEX_NAME = v_index_name 
+          AND TABLE_NAME = v_table_name;
+    END IF;
+
+    -- [2] 动态创建索引（强制保留大小写）
+    IF index_exists = 0 THEN
+        EXECUTE IMMEDIATE '
+            CREATE INDEX "' || v_index_name || '" 
+            ON "' || 
+                CASE WHEN v_schema_name != '' THEN v_schema_name || '"."' ELSE '' END 
+                || v_table_name || '" 
+            ("Key")';
+        
+        DBMS_OUTPUT.PUT_LINE('索引 "' || v_index_name || '" 创建成功');
+    END IF;
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('执行错误: ' || SQLERRM);
+END;
+/
+DECLARE
+    v_schema_name   VARCHAR2(30) := '[SchemaNameOnly]';                  -- 目标模式（空字符串表示当前模式）
+    v_table_name    VARCHAR2(30) := 'AggregatedCounter';       -- 表名（严格区分大小写）
+    v_index_name    VARCHAR2(100) := 'IX_HangFire_AggregatedCounter_ExpireAt'; -- 索引名
+    index_exists    INTEGER := 0;
+BEGIN
+    -- [1] 精确检查索引是否存在（兼容双引号定义的对象名）
+    IF v_schema_name IS NOT NULL AND v_schema_name != '' THEN
+        -- 跨模式检查（处理双引号场景）
+        EXECUTE IMMEDIATE '
+            SELECT COUNT(*) 
+            FROM ALL_INDEXES 
+            WHERE OWNER = :1 
+              AND INDEX_NAME = :2 
+              AND TABLE_NAME = :3'
+        INTO index_exists
+        USING UPPER(v_schema_name), v_index_name, v_table_name;
+    ELSE
+        -- 当前模式检查
+        SELECT COUNT(*) INTO index_exists
+        FROM USER_INDEXES 
+        WHERE INDEX_NAME = v_index_name 
+          AND TABLE_NAME = v_table_name;
+    END IF;
+
+    -- [2] 动态创建索引（强制保留大小写）
+    IF index_exists = 0 THEN
+        EXECUTE IMMEDIATE '
+            CREATE INDEX "' || v_index_name || '" 
+            ON "' || 
+                CASE WHEN v_schema_name != '' THEN v_schema_name || '"."' ELSE '' END 
+                || v_table_name || '" 
+            ("ExpireAt")';  -- 字段名保留原始大小写
+        DBMS_OUTPUT.PUT_LINE('索引 "' || v_index_name || '" 创建成功');
+    END IF;
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('执行错误: ' || SQLERRM);
 END;
 /
 
@@ -214,6 +338,88 @@ BEGIN
         ';
         DBMS_OUTPUT.PUT_LINE('唯一约束添加成功');
     END IF;
+END;
+/
+
+DECLARE
+    v_schema_name   VARCHAR2(30) := '[SchemaNameOnly]';                  -- 目标模式（空字符串表示当前模式）
+    v_table_name    VARCHAR2(30) := 'Hash';       -- 表名（严格区分大小写）
+    v_index_name    VARCHAR2(100) := 'IX_HangFire_Hash_ExpireAt'; -- 索引名
+    index_exists    INTEGER := 0;
+BEGIN
+    -- [1] 精确检查索引是否存在（兼容双引号定义的对象名）
+    IF v_schema_name IS NOT NULL AND v_schema_name != '' THEN
+        -- 跨模式检查（处理双引号场景）
+        EXECUTE IMMEDIATE '
+            SELECT COUNT(*) 
+            FROM ALL_INDEXES 
+            WHERE OWNER = :1 
+              AND INDEX_NAME = :2 
+              AND TABLE_NAME = :3'
+        INTO index_exists
+        USING UPPER(v_schema_name), v_index_name, v_table_name;
+    ELSE
+        -- 当前模式检查
+        SELECT COUNT(*) INTO index_exists
+        FROM USER_INDEXES 
+        WHERE INDEX_NAME = v_index_name 
+          AND TABLE_NAME = v_table_name;
+    END IF;
+
+    -- [2] 动态创建索引（强制保留大小写）
+    IF index_exists = 0 THEN
+        EXECUTE IMMEDIATE '
+            CREATE INDEX "' || v_index_name || '" 
+            ON "' || 
+                CASE WHEN v_schema_name != '' THEN v_schema_name || '"."' ELSE '' END 
+                || v_table_name || '" 
+            ("ExpireAt")';  -- 字段名保留原始大小写
+        DBMS_OUTPUT.PUT_LINE('索引 "' || v_index_name || '" 创建成功');
+    END IF;
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('执行错误: ' || SQLERRM);
+END;
+
+/
+DECLARE
+    v_schema_name   VARCHAR2(30) := '[SchemaNameOnly]';                  -- 目标模式（空字符串表示当前模式）
+    v_table_name    VARCHAR2(30) := 'Hash';       -- 表名（严格区分大小写）
+    v_index_name    VARCHAR2(100) := 'IX_HangFire_Hash_Key'; -- 索引名
+    index_exists    INTEGER := 0;
+BEGIN
+    -- [1] 精确检查索引是否存在（兼容双引号定义的对象名）
+    IF v_schema_name IS NOT NULL AND v_schema_name != '' THEN
+        -- 跨模式检查（处理双引号场景）
+        EXECUTE IMMEDIATE '
+            SELECT COUNT(*) 
+            FROM ALL_INDEXES 
+            WHERE OWNER = :1 
+              AND INDEX_NAME = :2 
+              AND TABLE_NAME = :3'
+        INTO index_exists
+        USING UPPER(v_schema_name), v_index_name, v_table_name;
+    ELSE
+        -- 当前模式检查
+        SELECT COUNT(*) INTO index_exists
+        FROM USER_INDEXES 
+        WHERE INDEX_NAME = v_index_name 
+          AND TABLE_NAME = v_table_name;
+    END IF;
+
+    -- [2] 动态创建索引（强制保留大小写）
+    IF index_exists = 0 THEN
+        EXECUTE IMMEDIATE '
+            CREATE INDEX "' || v_index_name || '" 
+            ON "' || 
+                CASE WHEN v_schema_name != '' THEN v_schema_name || '"."' ELSE '' END 
+                || v_table_name || '" 
+            ("Key")';  -- 字段名保留原始大小写
+        DBMS_OUTPUT.PUT_LINE('索引 "' || v_index_name || '" 创建成功');
+    END IF;
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('执行错误: ' || SQLERRM);
 END;
 /
 
@@ -296,6 +502,47 @@ EXCEPTION
 END;
 /
 
+DECLARE
+    v_schema_name   VARCHAR2(30) := '[SchemaNameOnly]';                  -- 目标模式（空字符串表示当前模式）
+    v_table_name    VARCHAR2(30) := 'JobParameter';       -- 表名（严格区分大小写）
+    v_index_name    VARCHAR2(100) := 'IX_HangFire_JobParameter_JobIdAndName'; -- 索引名
+    index_exists    INTEGER := 0;
+BEGIN
+    -- [1] 精确检查索引是否存在（兼容双引号定义的对象名）
+    IF v_schema_name IS NOT NULL AND v_schema_name != '' THEN
+        -- 跨模式检查（处理双引号场景）
+        EXECUTE IMMEDIATE '
+            SELECT COUNT(*) 
+            FROM ALL_INDEXES 
+            WHERE OWNER = :1 
+              AND INDEX_NAME = :2 
+              AND TABLE_NAME = :3'
+        INTO index_exists
+        USING UPPER(v_schema_name), v_index_name, v_table_name;
+    ELSE
+        -- 当前模式检查
+        SELECT COUNT(*) INTO index_exists
+        FROM USER_INDEXES 
+        WHERE INDEX_NAME = v_index_name 
+          AND TABLE_NAME = v_table_name;
+    END IF;
+
+    -- [2] 动态创建索引（强制保留大小写）
+    IF index_exists = 0 THEN
+        EXECUTE IMMEDIATE '
+            CREATE INDEX "' || v_index_name || '" 
+            ON "' || 
+                CASE WHEN v_schema_name != '' THEN v_schema_name || '"."' ELSE '' END 
+                || v_table_name || '" 
+            ("JobId","Name")';  -- 字段名保留原始大小写
+        DBMS_OUTPUT.PUT_LINE('索引 "' || v_index_name || '" 创建成功');
+    END IF;
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('执行错误: ' || SQLERRM);
+END;
+/
+
 -- ----------------------------
 -- Table structure for `JobQueue`
 -- ----------------------------
@@ -370,12 +617,50 @@ BEGIN
             ON DELETE CASCADE
         ';
         DBMS_OUTPUT.PUT_LINE('外键约束 FK_JOB_QUEUE_JOB 添加成功');
-    ELSE
-        DBMS_OUTPUT.PUT_LINE('外键约束 FK_JOB_QUEUE_JOB 已存在');
     END IF;
 END;
 /
 
+DECLARE
+    v_schema_name   VARCHAR2(30) := '[SchemaNameOnly]';                  -- 目标模式（空字符串表示当前模式）
+    v_table_name    VARCHAR2(30) := 'JobQueue';       -- 表名（严格区分大小写）
+    v_index_name    VARCHAR2(100) := 'IX_HangFire_JobQueue_QueueAndFetchedAt'; -- 索引名
+    index_exists    INTEGER := 0;
+BEGIN
+    -- [1] 精确检查索引是否存在（兼容双引号定义的对象名）
+    IF v_schema_name IS NOT NULL AND v_schema_name != '' THEN
+        -- 跨模式检查（处理双引号场景）
+        EXECUTE IMMEDIATE '
+            SELECT COUNT(*) 
+            FROM ALL_INDEXES 
+            WHERE OWNER = :1 
+              AND INDEX_NAME = :2 
+              AND TABLE_NAME = :3'
+        INTO index_exists
+        USING UPPER(v_schema_name), v_index_name, v_table_name;
+    ELSE
+        -- 当前模式检查
+        SELECT COUNT(*) INTO index_exists
+        FROM USER_INDEXES 
+        WHERE INDEX_NAME = v_index_name 
+          AND TABLE_NAME = v_table_name;
+    END IF;
+
+    -- [2] 动态创建索引（强制保留大小写）
+    IF index_exists = 0 THEN
+        EXECUTE IMMEDIATE '
+            CREATE INDEX "' || v_index_name || '" 
+            ON "' || 
+                CASE WHEN v_schema_name != '' THEN v_schema_name || '"."' ELSE '' END 
+                || v_table_name || '" 
+            ("Queue","FetchedAt")';  -- 字段名保留原始大小写
+        DBMS_OUTPUT.PUT_LINE('索引 "' || v_index_name || '" 创建成功');
+    END IF;
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('执行错误: ' || SQLERRM);
+END;
+/
 
 -- ----------------------------
 -- Table structure for `State`
@@ -434,8 +719,6 @@ BEGIN
             ON DELETE CASCADE
         ';
         DBMS_OUTPUT.PUT_LINE('外键约束 "' || v_owner || '"."FK_STATE_JOB" 添加成功');
-    ELSE
-        DBMS_OUTPUT.PUT_LINE('外键约束 "' || v_owner || '"."FK_STATE_JOB" 已存在');
     END IF;
 END;
 /
@@ -534,6 +817,46 @@ CREATE TABLE IF NOT EXISTS [SchemaName]"Server" (
     "LastHeartBeat" TIMESTAMP
 );
 /
+DECLARE
+    v_schema_name   VARCHAR2(30) := '[SchemaNameOnly]';                  -- 目标模式（空字符串表示当前模式）
+    v_table_name    VARCHAR2(30) := 'Server';       -- 表名（严格区分大小写）
+    v_index_name    VARCHAR2(100) := 'IX_HangFire_Server_LastHeartbeat'; -- 索引名
+    index_exists    INTEGER := 0;
+BEGIN
+    -- [1] 精确检查索引是否存在（兼容双引号定义的对象名）
+    IF v_schema_name IS NOT NULL AND v_schema_name != '' THEN
+        -- 跨模式检查（处理双引号场景）
+        EXECUTE IMMEDIATE '
+            SELECT COUNT(*) 
+            FROM ALL_INDEXES 
+            WHERE OWNER = :1 
+              AND INDEX_NAME = :2 
+              AND TABLE_NAME = :3'
+        INTO index_exists
+        USING UPPER(v_schema_name), v_index_name, v_table_name;
+    ELSE
+        -- 当前模式检查
+        SELECT COUNT(*) INTO index_exists
+        FROM USER_INDEXES 
+        WHERE INDEX_NAME = v_index_name 
+          AND TABLE_NAME = v_table_name;
+    END IF;
+
+    -- [2] 动态创建索引（强制保留大小写）
+    IF index_exists = 0 THEN
+        EXECUTE IMMEDIATE '
+            CREATE INDEX "' || v_index_name || '" 
+            ON "' || 
+                CASE WHEN v_schema_name != '' THEN v_schema_name || '"."' ELSE '' END 
+                || v_table_name || '" 
+            ("LastHeartBeat")';  -- 字段名保留原始大小写
+        DBMS_OUTPUT.PUT_LINE('索引 "' || v_index_name || '" 创建成功');
+    END IF;
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('执行错误: ' || SQLERRM);
+END;
+/
 
 -- ----------------------------
 -- Table structure for `Set`
@@ -546,6 +869,7 @@ CREATE TABLE  IF NOT EXISTS  [SchemaName]"Set" (
     "ExpireAt" TIMESTAMP
 );
 /
+
 
 DECLARE
     constraint_exists INTEGER;
@@ -576,6 +900,168 @@ BEGIN
 END;
 /
 
+DECLARE
+    v_schema_name   VARCHAR2(30) := '[SchemaNameOnly]';                  -- 目标模式（空字符串表示当前模式）
+    v_table_name    VARCHAR2(30) := 'Set';       -- 表名（严格区分大小写）
+    v_index_name    VARCHAR2(100) := 'IX_HangFire_Set_ExpireAt'; -- 索引名
+    index_exists    INTEGER := 0;
+BEGIN
+    -- [1] 精确检查索引是否存在（兼容双引号定义的对象名）
+    IF v_schema_name IS NOT NULL AND v_schema_name != '' THEN
+        -- 跨模式检查（处理双引号场景）
+        EXECUTE IMMEDIATE '
+            SELECT COUNT(*) 
+            FROM ALL_INDEXES 
+            WHERE OWNER = :1 
+              AND INDEX_NAME = :2 
+              AND TABLE_NAME = :3'
+        INTO index_exists
+        USING UPPER(v_schema_name), v_index_name, v_table_name;
+    ELSE
+        -- 当前模式检查
+        SELECT COUNT(*) INTO index_exists
+        FROM USER_INDEXES 
+        WHERE INDEX_NAME = v_index_name 
+          AND TABLE_NAME = v_table_name;
+    END IF;
+
+    -- [2] 动态创建索引（强制保留大小写）
+    IF index_exists = 0 THEN
+        EXECUTE IMMEDIATE '
+            CREATE INDEX "' || v_index_name || '" 
+            ON "' || 
+                CASE WHEN v_schema_name != '' THEN v_schema_name || '"."' ELSE '' END 
+                || v_table_name || '" 
+            ("ExpireAt")';  -- 字段名保留原始大小写
+        DBMS_OUTPUT.PUT_LINE('索引 "' || v_index_name || '" 创建成功');
+    END IF;
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('执行错误: ' || SQLERRM);
+END;
+/
+
+DECLARE
+    v_schema_name   VARCHAR2(30) := '[SchemaNameOnly]';                  -- 目标模式（空字符串表示当前模式）
+    v_table_name    VARCHAR2(30) := 'Set';       -- 表名（严格区分大小写）
+    v_index_name    VARCHAR2(100) := 'IX_HangFire_Set_Score'; -- 索引名
+    index_exists    INTEGER := 0;
+BEGIN
+    -- [1] 精确检查索引是否存在（兼容双引号定义的对象名）
+    IF v_schema_name IS NOT NULL AND v_schema_name != '' THEN
+        -- 跨模式检查（处理双引号场景）
+        EXECUTE IMMEDIATE '
+            SELECT COUNT(*) 
+            FROM ALL_INDEXES 
+            WHERE OWNER = :1 
+              AND INDEX_NAME = :2 
+              AND TABLE_NAME = :3'
+        INTO index_exists
+        USING UPPER(v_schema_name), v_index_name, v_table_name;
+    ELSE
+        -- 当前模式检查
+        SELECT COUNT(*) INTO index_exists
+        FROM USER_INDEXES 
+        WHERE INDEX_NAME = v_index_name 
+          AND TABLE_NAME = v_table_name;
+    END IF;
+
+    -- [2] 动态创建索引（强制保留大小写）
+    IF index_exists = 0 THEN
+        EXECUTE IMMEDIATE '
+            CREATE INDEX "' || v_index_name || '" 
+            ON "' || 
+                CASE WHEN v_schema_name != '' THEN v_schema_name || '"."' ELSE '' END 
+                || v_table_name || '" 
+            ("Key","Score")';  -- 字段名保留原始大小写
+        DBMS_OUTPUT.PUT_LINE('索引 "' || v_index_name || '" 创建成功');
+    END IF;
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('执行错误: ' || SQLERRM);
+END;
+/
+DECLARE
+    v_schema_name   VARCHAR2(30) := '[SchemaNameOnly]';                  -- 目标模式（空字符串表示当前模式）
+    v_table_name    VARCHAR2(30) := 'Set';       -- 表名（严格区分大小写）
+    v_index_name    VARCHAR2(100) := 'UX_HangFire_Set_KeyAndValue'; -- 索引名
+    index_exists    INTEGER := 0;
+BEGIN
+    -- [1] 精确检查索引是否存在（兼容双引号定义的对象名）
+    IF v_schema_name IS NOT NULL AND v_schema_name != '' THEN
+        -- 跨模式检查（处理双引号场景）
+        EXECUTE IMMEDIATE '
+            SELECT COUNT(*) 
+            FROM ALL_INDEXES 
+            WHERE OWNER = :1 
+              AND INDEX_NAME = :2 
+              AND TABLE_NAME = :3'
+        INTO index_exists
+        USING UPPER(v_schema_name), v_index_name, v_table_name;
+    ELSE
+        -- 当前模式检查
+        SELECT COUNT(*) INTO index_exists
+        FROM USER_INDEXES 
+        WHERE INDEX_NAME = v_index_name 
+          AND TABLE_NAME = v_table_name;
+    END IF;
+
+    -- [2] 动态创建索引（强制保留大小写）
+    IF index_exists = 0 THEN
+        EXECUTE IMMEDIATE '
+            CREATE INDEX "' || v_index_name || '" 
+            ON "' || 
+                CASE WHEN v_schema_name != '' THEN v_schema_name || '"."' ELSE '' END 
+                || v_table_name || '" 
+            ("Key","Value")';  -- 字段名保留原始大小写
+        DBMS_OUTPUT.PUT_LINE('索引 "' || v_index_name || '" 创建成功');
+    END IF;
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('执行错误: ' || SQLERRM);
+END;
+/
+DECLARE
+    v_schema_name   VARCHAR2(30) := '[SchemaNameOnly]';                  -- 目标模式（空字符串表示当前模式）
+    v_table_name    VARCHAR2(30) := 'Set';       -- 表名（严格区分大小写）
+    v_index_name    VARCHAR2(100) := 'IX_HangFire_Set_Key'; -- 索引名
+    index_exists    INTEGER := 0;
+BEGIN
+    -- [1] 精确检查索引是否存在（兼容双引号定义的对象名）
+    IF v_schema_name IS NOT NULL AND v_schema_name != '' THEN
+        -- 跨模式检查（处理双引号场景）
+        EXECUTE IMMEDIATE '
+            SELECT COUNT(*) 
+            FROM ALL_INDEXES 
+            WHERE OWNER = :1 
+              AND INDEX_NAME = :2 
+              AND TABLE_NAME = :3'
+        INTO index_exists
+        USING UPPER(v_schema_name), v_index_name, v_table_name;
+    ELSE
+        -- 当前模式检查
+        SELECT COUNT(*) INTO index_exists
+        FROM USER_INDEXES 
+        WHERE INDEX_NAME = v_index_name 
+          AND TABLE_NAME = v_table_name;
+    END IF;
+
+    -- [2] 动态创建索引（强制保留大小写）
+    IF index_exists = 0 THEN
+        EXECUTE IMMEDIATE '
+            CREATE INDEX "' || v_index_name || '" 
+            ON "' || 
+                CASE WHEN v_schema_name != '' THEN v_schema_name || '"."' ELSE '' END 
+                || v_table_name || '" 
+            ("Key")';  -- 字段名保留原始大小写
+        DBMS_OUTPUT.PUT_LINE('索引 "' || v_index_name || '" 创建成功');
+    END IF;
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('执行错误: ' || SQLERRM);
+END;
+/
+
 
 -- ----------------------------
 -- Table structure for `List`
@@ -586,3 +1072,84 @@ CREATE TABLE  IF NOT EXISTS  [SchemaName]"List" (
     "Value"     CLOB,
     "ExpireAt" TIMESTAMP
 );
+/
+DECLARE
+    v_schema_name   VARCHAR2(30) := '[SchemaNameOnly]';                  -- 目标模式（空字符串表示当前模式）
+    v_table_name    VARCHAR2(30) := 'List';       -- 表名（严格区分大小写）
+    v_index_name    VARCHAR2(100) := 'IX_HangFire_List_ExpireAt'; -- 索引名
+    index_exists    INTEGER := 0;
+BEGIN
+    -- [1] 精确检查索引是否存在（兼容双引号定义的对象名）
+    IF v_schema_name IS NOT NULL AND v_schema_name != '' THEN
+        -- 跨模式检查（处理双引号场景）
+        EXECUTE IMMEDIATE '
+            SELECT COUNT(*) 
+            FROM ALL_INDEXES 
+            WHERE OWNER = :1 
+              AND INDEX_NAME = :2 
+              AND TABLE_NAME = :3'
+        INTO index_exists
+        USING UPPER(v_schema_name), v_index_name, v_table_name;
+    ELSE
+        -- 当前模式检查
+        SELECT COUNT(*) INTO index_exists
+        FROM USER_INDEXES 
+        WHERE INDEX_NAME = v_index_name 
+          AND TABLE_NAME = v_table_name;
+    END IF;
+
+    -- [2] 动态创建索引（强制保留大小写）
+    IF index_exists = 0 THEN
+        EXECUTE IMMEDIATE '
+            CREATE INDEX "' || v_index_name || '" 
+            ON "' || 
+                CASE WHEN v_schema_name != '' THEN v_schema_name || '"."' ELSE '' END 
+                || v_table_name || '" 
+            ("ExpireAt")';  -- 字段名保留原始大小写
+        DBMS_OUTPUT.PUT_LINE('索引 "' || v_index_name || '" 创建成功');
+    END IF;
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('执行错误: ' || SQLERRM);
+END;
+/
+DECLARE
+    v_schema_name   VARCHAR2(30) := '[SchemaNameOnly]';                  -- 目标模式（空字符串表示当前模式）
+    v_table_name    VARCHAR2(30) := 'List';       -- 表名（严格区分大小写）
+    v_index_name    VARCHAR2(100) := 'IX_HangFire_List_Key'; -- 索引名
+    index_exists    INTEGER := 0;
+BEGIN
+    -- [1] 精确检查索引是否存在（兼容双引号定义的对象名）
+    IF v_schema_name IS NOT NULL AND v_schema_name != '' THEN
+        -- 跨模式检查（处理双引号场景）
+        EXECUTE IMMEDIATE '
+            SELECT COUNT(*) 
+            FROM ALL_INDEXES 
+            WHERE OWNER = :1 
+              AND INDEX_NAME = :2 
+              AND TABLE_NAME = :3'
+        INTO index_exists
+        USING UPPER(v_schema_name), v_index_name, v_table_name;
+    ELSE
+        -- 当前模式检查
+        SELECT COUNT(*) INTO index_exists
+        FROM USER_INDEXES 
+        WHERE INDEX_NAME = v_index_name 
+          AND TABLE_NAME = v_table_name;
+    END IF;
+
+    -- [2] 动态创建索引（强制保留大小写）
+    IF index_exists = 0 THEN
+        EXECUTE IMMEDIATE '
+            CREATE INDEX "' || v_index_name || '" 
+            ON "' || 
+                CASE WHEN v_schema_name != '' THEN v_schema_name || '"."' ELSE '' END 
+                || v_table_name || '" 
+            ("Key")';  -- 字段名保留原始大小写
+        DBMS_OUTPUT.PUT_LINE('索引 "' || v_index_name || '" 创建成功');
+    END IF;
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('执行错误: ' || SQLERRM);
+END;
+/
