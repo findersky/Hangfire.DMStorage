@@ -43,7 +43,6 @@ BEGIN
 END;
 /
 
-
 -- ----------------------------
 -- Table structure for `Job`
 -- ----------------------------
@@ -85,9 +84,7 @@ DECLARE
     v_index_name    VARCHAR2(30) := 'IX_HangFire_Job_ExpireAt'; -- 索引名（保留大小写）
     index_exists    INTEGER := 0;
 BEGIN
-    --  检查索引是否存在（精确匹配大小写）
     IF v_schema_name IS NOT NULL AND v_schema_name != '' THEN
-        -- 跨模式查询（处理双引号定义的对象名）
         EXECUTE IMMEDIATE '
             SELECT COUNT(*) 
             FROM ALL_INDEXES 
@@ -97,14 +94,12 @@ BEGIN
         INTO index_exists
         USING UPPER(v_schema_name), v_index_name, v_table_name;
     ELSE
-        -- 当前模式查询
         SELECT COUNT(*) INTO index_exists
         FROM USER_INDEXES
         WHERE INDEX_NAME = v_index_name 
           AND TABLE_NAME = v_table_name;
     END IF;
 
-    --  动态创建索引（保留表名、字段名大小写）
     IF index_exists = 0 THEN
         EXECUTE IMMEDIATE '
             CREATE INDEX "' || v_index_name || '" 
