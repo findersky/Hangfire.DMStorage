@@ -1,7 +1,7 @@
 ﻿using Hangfire.Annotations;
 using Hangfire.States;
 
-namespace Hangfire.DMStorage.NetCore.CustomJobs
+namespace Hangfire.DMStorage.NetCore.Sample.CustomJobs
 {
     internal class CustomBackgroundJobStateChanger : IBackgroundJobStateChanger
     {

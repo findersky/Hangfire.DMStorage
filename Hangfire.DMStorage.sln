@@ -13,7 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hangfire.DMStorage.Tests", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hangfire.DMStorage.NetCore", "Hangfire.DMStorage.NetCore\Hangfire.DMStorage.NetCore.csproj", "{C5DE63D9-4CF4-4ADC-88D0-E2B18A66F462}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hangfire.DMStorage.NetCore.Sample", "Hangfire.DMStorage.NetCore.Sample\Hangfire.DMStorage.NetCore.Sample.csproj", "{C5DE63D9-4CF4-4ADC-88D0-E2B18A66F462}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

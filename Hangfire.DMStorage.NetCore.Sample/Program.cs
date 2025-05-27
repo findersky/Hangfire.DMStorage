@@ -1,8 +1,8 @@
 ﻿
 using Hangfire.Client;
 using Hangfire.Common;
-using Hangfire.DMStorage.NetCore.CustomJobs;
-using Hangfire.DMStorage.NetCore.Filters;
+using Hangfire.DMStorage.NetCore.Sample.CustomJobs;
+using Hangfire.DMStorage.NetCore.Sample.Filters;
 using Hangfire.Server;
 using Hangfire.States;
 using Microsoft.AspNetCore.Hosting;
@@ -12,7 +12,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System.Data;
 
-namespace Hangfire.DMStorage.NetCore
+namespace Hangfire.DMStorage.NetCore.Sample
 {
     internal class Program
     {

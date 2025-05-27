@@ -3,7 +3,7 @@ using Hangfire.Server;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace Hangfire.DMStorage.NetCore.CustomJobs
+namespace Hangfire.DMStorage.NetCore.Sample.CustomJobs
 {
     internal class RecurringJobsService : BackgroundService
     {
