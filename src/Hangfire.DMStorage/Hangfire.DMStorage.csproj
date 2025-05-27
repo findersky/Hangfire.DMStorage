@@ -16,10 +16,10 @@ Hangfire 达梦数据库存储。</Description>
     <PackageId>DMStorage.Hangfire</PackageId>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <AssemblyVersion>1.0.0.5</AssemblyVersion>
-    <FileVersion>1.0.0.5</FileVersion>
-    <Version>1.0.0.5</Version>
-    <PackageReleaseNotes>1、Modify the initialization script and add an index
+    <AssemblyVersion>1.0.0.6</AssemblyVersion>
+    <FileVersion>1.0.0.6</FileVersion>
+    <Version>1.0.0.6</Version>
+    <PackageReleaseNotes>1、Update the referenced component version.
 
 </PackageReleaseNotes>
   </PropertyGroup>
