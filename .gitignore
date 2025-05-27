@@ -10,5 +10,5 @@
 /src/Hangfire.DMStorage/bin
 /Hangfire.DMStorage.Tests/obj
 /Hangfire.DMStorage.Tests/bin
-/Hangfire.DMStorage.NetCore/bin
-/Hangfire.DMStorage.NetCore/obj
+/Hangfire.DMStorage.NetCore.Sample/bin
+/Hangfire.DMStorage.NetCore.Sample/obj

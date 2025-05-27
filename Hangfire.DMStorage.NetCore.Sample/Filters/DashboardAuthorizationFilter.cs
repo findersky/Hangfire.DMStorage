@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Hangfire.DMStorage.NetCore.Filters
+namespace Hangfire.DMStorage.NetCore.Sample.Filters
 {
     public class DashboardAuthorizationFilter : IDashboardAuthorizationFilter
     {
