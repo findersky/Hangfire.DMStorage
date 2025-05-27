@@ -1,12 +1,13 @@
 ﻿# Hangfire.DMStorage
 
-## <a target="_blank" href="Chinese_README.md">中文</a>
+
+## [中文](Chinese_README.md)
+
 
 Hangfire.DMStorage is an extension component that provides support for Hangfire to use the Dameng database.
 
 
-
-Dameng storage implementation of <a href="http://hangfire.io/" target="_blank">Hangfire</a>- fire-and-forget, delayed and recurring tasks runner for .NET. Scalable and reliable background job runner. Supports multiple servers, CPU and I/O intensive, long-running and short-running jobs.
+Dameng storage implementation of [Hangfire](http://hangfire.io/)- fire-and-forget, delayed and recurring tasks runner for .NET. Scalable and reliable background job runner. Supports multiple servers, CPU and I/O intensive, long-running and short-running jobs.
 
 ## Installation
 Install Hangfire.DMStorage

@@ -1,30 +1,31 @@
 # Hangfire.DMStorage
 
-## <a target="_blank" href="README.md">English</a>
 
-Hangfire.DMStorage ÊÇÒ»¸öÀ©Õ¹×é¼ş£¬ËüÎª Hangfire Ê¹ÓÃ Dameng Êı¾İ¿âÌá¹©Ö§³Ö¡£
+##  [ä¸­æ–‡](README.md)
+
+Hangfire.DMStorage æ˜¯ä¸€ä¸ªæ‰©å±•ç»„ä»¶ï¼Œå®ƒä¸º Hangfire ä½¿ç”¨ Dameng æ•°æ®åº“æä¾›æ”¯æŒã€‚
 
 
-<a href="http://hangfire.io/" target="_blank">Hangfire</a> µÄ dameng ´æ´¢ÊµÏÖ - .NET µÄ¼´·¢¼´Æú¡¢ÑÓ³ÙºÍÖØ¸´ÈÎÎñÔËĞĞÆ÷¡£¿ÉÀ©Õ¹ÇÒ¿É¿¿µÄºóÌ¨×÷ÒµÔËĞĞ³ÌĞò¡£Ö§³Ö¶à¸ö·şÎñÆ÷¡¢CPU ºÍ I/O ÃÜ¼¯ĞÍ¡¢³¤Ê±¼äÔËĞĞºÍ¶ÌÆÚÔËĞĞµÄ×÷Òµ¡£
+<a href="http://hangfire.io/" target="_blank">Hangfire</a> çš„ dameng å­˜å‚¨å®ç° - .NET çš„å³å‘å³å¼ƒã€å»¶è¿Ÿå’Œé‡å¤ä»»åŠ¡è¿è¡Œå™¨ã€‚å¯æ‰©å±•ä¸”å¯é çš„åå°ä½œä¸šè¿è¡Œç¨‹åºã€‚æ”¯æŒå¤šä¸ªæœåŠ¡å™¨ã€CPU å’Œ I/O å¯†é›†å‹ã€é•¿æ—¶é—´è¿è¡Œå’ŒçŸ­æœŸè¿è¡Œçš„ä½œä¸šã€‚
 
-## °²×°
-°²×° Hangfire.DMStorage
+## å®‰è£…
+å®‰è£… Hangfire.DMStorage
 
-ÔÚ NuGet °ü¹ÜÀíÆ÷¿ØÖÆÌ¨ÔËĞĞÒÔÏÂÃüÁîÒÔ°²×° Hangfire.DMStorage£º
+åœ¨ NuGet åŒ…ç®¡ç†å™¨æ§åˆ¶å°è¿è¡Œä»¥ä¸‹å‘½ä»¤ä»¥å®‰è£… Hangfire.DMStorageï¼š
 
 ```
 Install-Package DMStorage.Hangfire
 ```
 
-## ÓÃ·¨
+## ç”¨æ³•
 
-Ê¹ÓÃÒÔÏÂ·½·¨Ö®Ò»½øĞĞ³õÊ¼»¯£º `DMStorage`: 
-- Ê¹ÓÃ´øÓĞÁ¬½Ó×Ö·û´®¹¹Ôìº¯Êı²ÎÊıµÄĞÂÊµÀı´´½¨ DMStorage£¬²¢Í¨¹ı UseStorage ·½·¨½«Æä´«µİ¸øÅäÖÃ¡£
+ä½¿ç”¨ä»¥ä¸‹æ–¹æ³•ä¹‹ä¸€è¿›è¡Œåˆå§‹åŒ–ï¼š `DMStorage`: 
+- ä½¿ç”¨å¸¦æœ‰è¿æ¥å­—ç¬¦ä¸²æ„é€ å‡½æ•°å‚æ•°çš„æ–°å®ä¾‹åˆ›å»º DMStorageï¼Œå¹¶é€šè¿‡ UseStorage æ–¹æ³•å°†å…¶ä¼ é€’ç»™é…ç½®ã€‚
 ```csharp
   GlobalConfiguration.Configuration.UseStorage(
     new DMStorage(connectionString));
 ```
-- ¿ÉÒÔ½«Ò»¸ö»ò¶à¸öÑ¡Ïî×÷Îª²ÎÊı´«µİ¸ø DMStorage:
+- å¯ä»¥å°†ä¸€ä¸ªæˆ–å¤šä¸ªé€‰é¡¹ä½œä¸ºå‚æ•°ä¼ é€’ç»™ DMStorage:
 ```csharp
 GlobalConfiguration.Configuration.UseStorage(
     new DMStorage(
@@ -41,7 +42,7 @@ GlobalConfiguration.Configuration.UseStorage(
             SchemaName= "SYSDBA"
         }));
 ```
-## ÔÚHangfire.HttpJobÖĞÊ¹ÓÃ
+## åœ¨Hangfire.HttpJobä¸­ä½¿ç”¨
 ```csharp
      context.Services.AddHangfire(x => x.UseStorage(new DMStorage(connectionString, new DMStorageOptions()
             {
@@ -58,19 +59,19 @@ GlobalConfiguration.Configuration.UseStorage(
             .UseHangfireHttpJob());
 ```
 
-¿ÉÑ¡²ÎÊıµÄÃèÊö£º
-- `TransactionIsolationLevel` - ÊÂÎñ¸ôÀë¼¶±ğ¡£Ä¬ÈÏÊÇ¶ÁÈ¡ÒÑÌá½»¡£
-- `QueuePollInterval` - ×÷Òµ¶ÓÁĞÂÖÑ¯¼ä¸ô¡£Ä¬ÈÏÖµÎª15Ãë¡£
-- `JobExpirationCheckInterval` - ×÷Òµµ½ÆÚ¼ì²é¼ä¸ô£¨¹ÜÀí¹ıÆÚ¼ÇÂ¼£©¡£Ä¬ÈÏÖµÎª1Ğ¡Ê±¡£
-- `CountersAggregateInterval` - ¾ÛºÏ¼ÆÊıÆ÷µÄ¼ä¸ô¡£Ä¬ÈÏÎª5·ÖÖÓ¡£
-- `PrepareSchemaIfNecessary` - Èç¹ûÉèÖÃÎªtrue£¬Ôò´´½¨Êı¾İ¿â±í¡£Ä¬ÈÏÊÇtrue¡£
-- `DashboardJobListLimit` - ÒÇ±í°å×÷ÒµÁĞ±íÏŞÖÆ¡£Ä¬ÈÏÖµÎª50000¡£
-- `TransactionTimeout` - ÊÂÎñ³¬Ê±¡£Ä¬ÈÏÎª1·ÖÖÓ¡£
-- `SchemaName` - Ä£Ê½. 
+å¯é€‰å‚æ•°çš„æè¿°ï¼š
+- `TransactionIsolationLevel` - äº‹åŠ¡éš”ç¦»çº§åˆ«ã€‚é»˜è®¤æ˜¯è¯»å–å·²æäº¤ã€‚
+- `QueuePollInterval` - ä½œä¸šé˜Ÿåˆ—è½®è¯¢é—´éš”ã€‚é»˜è®¤å€¼ä¸º15ç§’ã€‚
+- `JobExpirationCheckInterval` - ä½œä¸šåˆ°æœŸæ£€æŸ¥é—´éš”ï¼ˆç®¡ç†è¿‡æœŸè®°å½•ï¼‰ã€‚é»˜è®¤å€¼ä¸º1å°æ—¶ã€‚
+- `CountersAggregateInterval` - èšåˆè®¡æ•°å™¨çš„é—´éš”ã€‚é»˜è®¤ä¸º5åˆ†é’Ÿã€‚
+- `PrepareSchemaIfNecessary` - å¦‚æœè®¾ç½®ä¸ºtrueï¼Œåˆ™åˆ›å»ºæ•°æ®åº“è¡¨ã€‚é»˜è®¤æ˜¯trueã€‚
+- `DashboardJobListLimit` - ä»ªè¡¨æ¿ä½œä¸šåˆ—è¡¨é™åˆ¶ã€‚é»˜è®¤å€¼ä¸º50000ã€‚
+- `TransactionTimeout` - äº‹åŠ¡è¶…æ—¶ã€‚é»˜è®¤ä¸º1åˆ†é’Ÿã€‚
+- `SchemaName` - æ¨¡å¼. 
 
-### ÈçºÎÏŞÖÆ´ò¿ªÁ¬½ÓµÄÊıÁ¿
+### å¦‚ä½•é™åˆ¶æ‰“å¼€è¿æ¥çš„æ•°é‡
 
-´ò¿ªÁ¬½ÓµÄÊıÁ¿È¡¾öÓÚ Hangfire µÄ¹¤×÷Ïß³ÌÊı¡£Äú¿ÉÒÔÍ¨¹ıÉèÖÃ BackgroundJobServerOptions ÖĞµÄ WorkerCount ÊôĞÔÖµÀ´ÏŞÖÆ¹¤×÷Ïß³ÌÊı¡£
+æ‰“å¼€è¿æ¥çš„æ•°é‡å–å†³äº Hangfire çš„å·¥ä½œçº¿ç¨‹æ•°ã€‚æ‚¨å¯ä»¥é€šè¿‡è®¾ç½® BackgroundJobServerOptions ä¸­çš„ WorkerCount å±æ€§å€¼æ¥é™åˆ¶å·¥ä½œçº¿ç¨‹æ•°ã€‚
 ```csharp
 app.UseHangfireServer(
    new BackgroundJobServerOptions
@@ -78,8 +79,8 @@ app.UseHangfireServer(
       WorkerCount = 1
    });
 ```
-²é¿´¸ü¶à: <a target="_blank" href="http://hangfire.io/features.html#concurrency-level-control">http://hangfire.io/features.html#concurrency-level-control</a>
+æŸ¥çœ‹æ›´å¤š: <a target="_blank" href="http://hangfire.io/features.html#concurrency-level-control">http://hangfire.io/features.html#concurrency-level-control</a>
 
 
-## ¹¹½¨
-ÇëÊ¹ÓÃ Visual Studio »òÄúÑ¡ÔñµÄÈÎºÎÆäËû¹¤¾ßÀ´¹¹½¨½â¾ö·½°¸¡£
+## æ„å»º
+è¯·ä½¿ç”¨ Visual Studio æˆ–æ‚¨é€‰æ‹©çš„ä»»ä½•å…¶ä»–å·¥å…·æ¥æ„å»ºè§£å†³æ–¹æ¡ˆã€‚
