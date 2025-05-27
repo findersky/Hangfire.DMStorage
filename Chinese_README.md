@@ -1,7 +1,7 @@
 # Hangfire.DMStorage
 
 
-##  [中文](README.md)
+##  [English](README.md)
 
 Hangfire.DMStorage 是一个扩展组件，它为 Hangfire 使用 Dameng 数据库提供支持。
 
